@@ -30,5 +30,6 @@ Route::get('/admin/edit/{test}', 'AdminController@edit_test');
 
 Route::post('/admin/test_create', 'AdminController@test_create');
 Route::post('/admin/edit/{test}', 'AdminController@add_question');
+Route::post('/admin/add_option/{test}', 'AdminController@add_option');
 
 

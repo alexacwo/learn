@@ -111,5 +111,120 @@
 	<div class="col-sm-3">
 			</div>
 			
+		
+ <br><br>	<form action="{{ url('/admin/add_option/'.$test->id) }}" method="POST" class="form-horizontal">
+		{{ csrf_field() }}
+				Add Option:
+				<br>
+				<div class="col-sm-6">
+					<label for="test-title">Title:</label> 
+				</div> 		
+			</div>
+			 
+
+		<!-- Add Task Button -->
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-6">
+			</div>
+		</div>
+		
+		<div ng-app="angularjs-starter" ng-controller="MainCtrl">
+<fieldset  data-ng-repeat="choice in choices">
+ 
+	  
+      <input type="text" ng-model="choice.name" name="options[@{{ choice.id }}]" placeholder="Enter mobile number">
+      <button ng-show="$last" ng-click="removeChoice($event)">-</button> 
+   </fieldset>
+   
+   
+	  <button ng-click="addNewChoice($event)">Add fields</button> 
+	  
+			</div>	
+			dfsdjf<br><br><br><br><br>
+				<button type="submit" class="btn btn-default">
+					<i class="fa fa-plus"></i> Add
+				</button>
+	</form>
+	
+		
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>		
+			<script>
+				var app = angular.module('angularjs-starter', []);
+
+				app.controller('MainCtrl', function($scope) {
+
+					$scope.choices = [];
+
+					$scope.addNewChoice = function($event) {
+						
+  $event.preventDefault();
+						var newItemNo = $scope.choices.length+1;
+						$scope.choices.push({'id':newItemNo});
+					};
+
+					$scope.removeChoice = function($event) {
+						
+  $event.preventDefault();
+						var lastItem = $scope.choices.length-1;
+						$scope.choices.splice(lastItem);
+					};
+
+				});
+			</script>
+	<div class="col-sm-3">
+			</div>
+			<div class="col-sm-6">
+
+ <br>
+ OPTIONS:<br> 
+     <!-- Current Tasks -->
+    @if (count($question_options) > 0)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                OPTIONS
+            </div>
+
+            <div class="panel-body">
 			
+                <table class="table table-striped questions-table">
+
+                    <!-- Table Headings -->
+                    <thead>
+                        <th>Option number</th>
+						<th>Option id in the DB</th>
+                        <th>Option TITLE</th>
+                    </thead>
+
+                    <!-- Table Body -->
+                    <tbody>
+					
+						@for ($j = 0; $j < count($question_options); $j++)
+                            <tr>
+                                <td class="table-text">								
+									{{ $j+1 }}
+                                </td> 
+                                <td class="table-text">								
+									{{ $question_options[$j]->id }}
+                                </td> 
+                                <td class="table-text">								
+									{{ $question_options[$j]->title }}
+                                </td>
+                            </tr>
+                        @endfor
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
+	
+			</div>
+	
+	<div class="col-sm-3">
+			</div>
+					
+{!! Form::open(array('url' => 'foo/bar')) !!}
+    {!! Form::label('Your Name') !!}
+   AAAAAAAAA <br><br><br><br>{{ Form::bsText('first_name') }}
+{!! Form::close() !!}
+				{{ dd($request) }}
 @endsection
