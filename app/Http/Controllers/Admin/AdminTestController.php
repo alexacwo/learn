@@ -116,13 +116,22 @@ class AdminTestController extends Controller
 	
 		$options = $request->options;
 		
-		 foreach ($options as $key => $option) {	
-			
-			/*$this->validate($request, [
-				'title' => 'required|max:100',
-			]); */ 	
-			
-			if ($key != $option['option_id']) {			
+		$options_to_delete_object = $request->options_to_delete;
+		
+		$brackets = array("[","]");
+		$options_to_delete_string = str_replace($brackets, "", $options_to_delete_object[0]);
+
+		$options_to_delete = explode(",", $options_to_delete_string);
+		
+		//dd($options_to_delete);
+		
+		\DB::table('question_options')->whereIn('id', $options_to_delete)->delete();
+		
+		foreach ($options as $key => $option) {	
+
+		 	
+
+			if (!empty($option['new_option'])) {			
 				$test->question_options()->create([
 					'title' => $option['title'],				
 					'question_id' => intval($option['question_id']),
@@ -154,7 +163,12 @@ class AdminTestController extends Controller
 	* @return Response
 	*/	
 	public function test_options_json(Test $test){  
-		     return response()->json($this->question_options->forTest($test));
+			$response_options = $this->question_options->forTest($test)->groupBy('question_id');
+			$last_option_id = \DB::table('question_options')->orderBy('id', 'desc')->first()->id;
+			
+			$response_options->put('lastOptionId', $last_option_id);
+			
+		    return response()->json($response_options);
 	}
 }
 
