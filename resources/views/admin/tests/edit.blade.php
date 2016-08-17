@@ -4,37 +4,35 @@
 
 @section('navbar')
 	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">ADMIN PANEL</strong></li>
-	<li><a href="{{ url('/') }}">Task 1</a></li>
-	<li><a href="{{ url('/') }}">Task 2</a></li>
+	<li><a href="{{ url('/admin/') }}">TESTS (edit)</a></li>
+	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">MENU 2</strong></li>
+	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">MENU 3</strong></li>
 	<li><a href="{{ url('/') }}">Go to Client Side</a></li>
 @endsection
 
 @section('content')
- <a href="{{ url('/admin/') }}">TEST LIST</a>
- 
-	<!-- New Test Form -->
-	<form action="{{ url('/admin/edit/'.$test->id) }}" method="POST" class="form-horizontal">
-		{{ csrf_field() }}
 
+<div class="col-sm-12">
+
+	<div class="col-sm-3">
+	</div>
+	<div class="col-sm-6">
+	
+		<form action="{{ url('/admin/edit/'.$test->id) }}" method="POST" class="form-horizontal">
+		{{ csrf_field() }}
 		
-		<!-- Task Name -->
-		<div class="form-group">
-		
-			<div class="col-sm-3">
-			</div>
-			<div class="col-sm-6">
-			
-			 TEST ID :<br>
- {{ $test->id }}
- <br><br>
-				Add Question:
-				
-				<br>
-				<div class="col-sm-6">
-					<label for="test-title">Title:</label>
-					<input type="text" name="title" id="test-title" class="form-control">
+			<div class="form-group">
+				<div class="col-sm-12">
+					
+					<br><br><strong>TEST ID:</strong> {{ $test->id }}
+					
+					<br><br><strong>FORM FOR ADDING QUESTION:</strong>
 				</div>
 				
+				<div class="col-sm-6">
+					<label for="test-title">Title:</label>
+					<input type="text" name="title" id="test-title" class="form-control">				 
+				</div>
 				<div class="col-sm-6">
 					<label for="test-type">Question type:</label>
 					<select name="type" id="test-type" class="form-control">
@@ -42,74 +40,160 @@
 						<option value="radiobuttons">Radio buttons</option>
 						<option value="textarea">Textarea</option>
 					</select>
-				</div>			
+				</div>
+			</div>	  
+			
+			<div class="form-group">
+				<div class="col-sm-12">
+					<button type="submit" class="btn btn-default">
+						<i class="fa fa-plus"></i> Add
+					</button>
+				</div>
 			</div>
 			
+		</form>
+		
+	</div>
+	<div class="col-sm-3">
+	</div>
+	
+</div>
+
+<div class="col-sm-12">
+	<div class="col-sm-3">
+	</div>
+	<div class="col-sm-6">	
+	
+		<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+		
+		<strong>TABLE WITH QUESTIONS FOR THIS TEST (id #{{ $test->id }}):</strong><br><br>
+		
+		@if (count($test_questions) > 0)
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Questions for the test
+				</div>
+
+				<div class="panel-body" ng-app="angularjs-starter" ng-controller="MainCtrl">
+						
+					<form action="{{ url('/admin/add_option/'.$test->id) }}" method="POST" class="form-horizontal">
+
+					{{ csrf_field() }}
+
+						<button type="submit" class="btn btn-primary">
+							SAVE TEST
+						</button>
+						
+						<table class="table table-striped questions-table">
+
+							<thead>
+								<th>Question number</th>
+								<th>Question id in the DB</th>
+								<th>Question TITLE</th>
+								<th>Question type</th>
+								<th>Options</th>
+							</thead>
+
+								
+							<tbody>
+								@for ($i = 0; $i < count($test_questions); $i++)
+									<tr>
+										<td class="table-text">								
+											{{ $i+1 }}
+										</td> 
+										<td class="table-text">								
+											{{ $test_questions[$i]->id }}
+										</td> 
+										<td class="table-text">								
+											{{ $test_questions[$i]->title }}
+										</td>
+										<td class="table-text">								
+											{{ $test_questions[$i]->type }}
+										</td>									
+										<td class="table-text">	
+										
+											<div class="form-group">
+											
+												{{--*/ $options_array = $question_options->where('question_id', $test_questions[$i]->id) /*--}}
+												
+												@foreach ($options_array as $question_option)
+													<!-- <fieldset  style="margin-bottom:10px;">
+														<div class="col-sm-9" style="margin-bottom:10px;">											
+															<input type="text" name="options[{{ $question_option->id }}][title]" class="form-control" value="{{ $question_option->title }}">
+															<input type="hidden" name="options[{{ $question_option->id }}][option_id]" class="form-control" value="{{ $question_option->id }}">	
+														</div>													
+														<div class="col-sm-3">
+															<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, {{ $question_option->id }})" class="btn btn-danger">X</button> 
+														</div>
+													</fieldset> -->
+												@endforeach	
+												
+												<fieldset data-ng-repeat="angularOption in angularOptionsArray" style="margin-bottom:10px;">
+													<div class="col-sm-9">
+														<input type="text" name="options[@{{ angularOption.id }}][title]" class="form-control" value="@{{ angularOption.title}}">
+														<input type="hidden" name="options[@{{ angularOption.id }}][question_id]" class="form-control" value="{{ $test_questions[$i]->id }}">							
+														<input type="hidden" name="options[@{{ angularOption.id }}][option_id]" class="form-control" value="0">	
+													</div>
+													<div class="col-sm-3">
+														<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, angOption.id)" class="btn btn-danger">X</button> 
+													</div>
+													<br>
+												</fieldset>
+												
+												<div class="col-sm-9">												
+													<button class="btn btn-info" ng-click="addNewOption($event, {{ $test_questions[$i]->id }})">
+														Add OPTIONS
+													</button>
+												</div> 
+												
+												<!--<fieldset data-ng-repeat="angOption in angOptions[{{ $test_questions[$i]->id }}]" style="margin-bottom:10px;">
+													<div class="col-sm-9">
+														<input type="text" name="options[@{{ angOption.id }}][title]" placeholder="Enter Option text" class="form-control">
+														<input type="hidden" name="options[@{{ angOption.id }}][question_id]" class="form-control" value="{{ $test_questions[$i]->id }}">							
+														<input type="hidden" name="options[@{{ angOption.id }}][option_id]" class="form-control" value="0">							
+													</div>
+													<div class="col-sm-3">
+														<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, angOption.id)" class="btn btn-danger">X</button> 
+													</div>
+													<br>
+												</fieldset>
+												
+												<div class="col-sm-9">												
+													<button class="btn btn-info" ng-click="addNewOption($event, {{ $test_questions[$i]->id }}, {{ count($options_array) }})">
+														Add OPTIONS
+													</button>
+												</div>	-->
+													
+											</div> 
+
+										</td>
+									</tr>
+								@endfor
+							</tbody>
+						</table>
+
+					</form>
+				</div>
+			</div>
+		@endif
+
+	</div>
+
+	<div class="col-sm-3">
+	</div>
+</div>
+
+<div class="col-sm-12">
+
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-6">	
+		
+		</div>	
+		<div class="col-sm-3">
 		</div>
 
-		<!-- Add Task Button -->
-		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-6">
-				<button type="submit" class="btn btn-default">
-					<i class="fa fa-plus"></i> Add
-				</button>
-			</div>
-		</div>
-	</form>
-	
-	
-	<div class="col-sm-3">
-			</div>
-			<div class="col-sm-6">
-
- <br>
- TEST QUESTIONS:<br> 
-     <!-- Current Tasks -->
-    @if (count($test_questions) > 0)
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Questions for the test
-            </div>
-
-            <div class="panel-body">
-                <table class="table table-striped questions-table">
-
-                    <!-- Table Headings -->
-                    <thead>
-                        <th>Question number</th>
-						<th>Question id in the DB</th>
-                        <th>Question TITLE</th>
-						<th>Question type</th>
-                    </thead>
-
-                    <!-- Table Body -->
-                    <tbody>
-						@for ($i = 0; $i < count($test_questions); $i++)
-                            <tr>
-                                <td class="table-text">								
-									{{ $i+1 }}
-                                </td> 
-                                <td class="table-text">								
-									{{ $test_questions[$i]->id }}
-                                </td> 
-                                <td class="table-text">								
-									{{ $test_questions[$i]->title }}
-                                </td>
-                                <td class="table-text">								
-									{{ $test_questions[$i]->type }}
-                                </td>
-                            </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    @endif
-	
-			</div>
-	
-	<div class="col-sm-3">
-			</div>
-			
-			
+</div> 
+ 
+ 
 @endsection

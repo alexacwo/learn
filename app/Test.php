@@ -28,5 +28,13 @@ class Test extends Model
     public function test_questions()
     {
         return $this->hasMany(TestQuestion::class);
+    }	
+	
+	/**
+     * Get all of the question options for all question for a given test
+     */
+    public function question_options()
+    {
+        return $this->hasMany(QuestionOption::class);
     }
 }

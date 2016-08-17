@@ -2,17 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Question;
+use App\Test;
 
-class TestQuestionsRepository
+class QuestionOptionsRepository
 {
     /**
-     * Get all of the question options for a given question
+     * Get all of the question options for all question for a given test
      *
-     * @param  Question $question
+     * @param  Test $test
      * @return Collection
      */
-    public function forQuestion(Question $question)
+    public function forTest(Test $test)
     {
         return $test->question_options()
                     ->orderBy('created_at', 'asc')

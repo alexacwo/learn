@@ -14,21 +14,28 @@
 use App\Task;
 use Illuminate\Http\Request;
 
-
-Route::get('/tasks', 'TaskController@index');
-Route::post('/task', 'TaskController@store');
-Route::delete('/task/{task}', 'TaskController@destroy');
-
 Route::auth();
 
-Route::get('/', 'TaskController@index');
-Route::get('/home', 'TaskController@index');
+/* CLIENT side */
 
-Route::get('/admin', 'AdminController@index');
-Route::get('/admin/tests', 'AdminController@index');
-Route::get('/admin/edit/{test}', 'AdminController@edit_test');
+Route::get('/', 'ClientController@index');
+Route::get('/home', 'ClientController@index');
 
-Route::post('/admin/test_create', 'AdminController@test_create');
-Route::post('/admin/edit/{test}', 'AdminController@add_question');
+/* ADMIN side */
+
+Route::get('/admin', 'Admin\AdminMainController@index');
+
+/* TESTS: Add, edit and delete tests */
+
+Route::get('/admin/tests', 'Admin\AdminTestController@index');
+Route::get('/admin/edit/{test}', 'Admin\AdminTestController@edit_test');
+
+Route::post('/admin/test_create', 'Admin\AdminTestController@test_create');
+Route::post('/admin/edit/{test}', 'Admin\AdminTestController@add_question');
+Route::post('/admin/add_option/{test}', 'Admin\AdminTestController@add_option');
+
+//Route::post('/admin/test_options_json/{test}', 'Admin\AdminTestController@test_options_json');
+
+Route::get('/admin/test_options_json/{test}', 'Admin\AdminTestController@test_options_json');
 
 

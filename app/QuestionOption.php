@@ -13,21 +13,13 @@ class QuestionOption extends Model
      *
      * @var array
      */
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'question_id'];
 	
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['title'];
-
     /**
      * Get the question that owns the option.
      */
-    public function question()
+    public function test()
     {
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(Test::class);
     }
-	
 }

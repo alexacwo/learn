@@ -4,8 +4,9 @@
 
 @section('navbar')
 	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">ADMIN PANEL</strong></li>
-	<li><a href="{{ url('/') }}">Task 1</a></li>
-	<li><a href="{{ url('/') }}">Task 2</a></li>
+	<li><a href="{{ url('/admin/') }}">TESTS (edit)</a></li>
+	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">MENU 2</strong></li>
+	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">MENU 3</strong></li>
 	<li><a href="{{ url('/') }}">Go to Client Side</a></li>
 @endsection
 

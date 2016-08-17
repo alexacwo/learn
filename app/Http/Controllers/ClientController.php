@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskRepository;
 
-class TaskController extends Controller
+class ClientController extends Controller
 {
     /**
      * The task repository instance.
      *
      * @var TaskRepository
      */
-    protected $tasks;
+  //  protected $tasks;
 
     /**
      * Create a new controller instance.
@@ -27,7 +27,7 @@ class TaskController extends Controller
     {
         $this->middleware('auth');
 		
-        $this->tasks = $tasks;
+       // $this->tasks = $tasks;
     }
 
     /**
@@ -38,9 +38,9 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        return view('tasks.index', [
+        return view('client.index'/*, [
             'tasks' => $this->tasks->forUser($request->user())
-        ]);
+        ]*/);
     }
 	
 	/**
@@ -49,7 +49,7 @@ class TaskController extends Controller
 	* @param  Request  $request
 	* @return Response
 	*/
-	public function store(Request $request)
+	/*public function store(Request $request)
 	{
 		$this->validate($request, [
 			'name' => 'required|max:255',
@@ -60,7 +60,7 @@ class TaskController extends Controller
 		]);
 
 		return redirect('/tasks');
-	}
+	}*/
 	
 	
 	/**
@@ -70,12 +70,12 @@ class TaskController extends Controller
 	 * @param  Task  $task
 	 * @return Response
 	 */
-	public function destroy(Request $request, Task $task)
+	/*public function destroy(Request $request, Task $task)
 	{
 		$this->authorize('destroy', $task);
 		
 		$task->delete();
 		
 		return redirect('/tasks');
-	}
+	}*/
 }
