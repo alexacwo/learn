@@ -70,8 +70,8 @@ class AdminTestController extends Controller
 	{
 		return view('admin.tests.edit', [
 			'test' => $test,		
-			'test_questions' => $this->test_questions->forTest($test),
-			'question_options' => $this->question_options->forTest($test),
+			'test_questions' => $this->test_questions->forTest($test),/*
+			'question_options' => $this->question_options->forTest($test),*/
 			'navbar_style' => 'navbar-inverse'
 		]);
 	}
@@ -97,8 +97,8 @@ class AdminTestController extends Controller
 		
 		return view('admin.tests.edit', [
 			'test' => $test,
-			'test_questions' => $this->test_questions->forTest($test),			
-			'question_options' => $this->question_options->forTest($test),
+			'test_questions' => $this->test_questions->forTest($test),/*		
+			'question_options' => $this->question_options->forTest($test),*/
 			'navbar_style' => 'navbar-inverse'
 		]);
 	}
@@ -113,39 +113,44 @@ class AdminTestController extends Controller
 	* @return Response
 	*/
 	public function add_option(Test $test, Request $request)	{		
-	
+		
+		if (!empty($request->options_to_delete)) {
+			$options_to_delete_object = $request->options_to_delete;
+		
+			$brackets = array("[","]");
+			$options_to_delete_string = str_replace($brackets, "", $options_to_delete_object[0]);
+
+			$options_to_delete = explode(",", $options_to_delete_string);
+			
+			\DB::table('question_options')->whereIn('id', $options_to_delete)->delete();
+		}
+		
 		$options = $request->options;
 		
-		 foreach ($options as $key => $option) {	
+	//	 dd($options);
+		if (!empty($options)) {
+			foreach ($options as $key => $option) {	
 			
-			/*$this->validate($request, [
-				'title' => 'required|max:100',
-			]); */ 	
-			
-			if ($key != $option['option_id']) {			
-				$test->question_options()->create([
-					'title' => $option['title'],				
-					'question_id' => intval($option['question_id']),
-				]); 
-			} else {							
-				$test->question_options()
-					->where('id', $key)
-					->update([
-					'title' => $option['title'],				
-				]); 
+				if (!empty($option['title'])) {
+					if (!empty($option['new_option'])) {			
+						$test->question_options()->create([
+							'title' => $option['title'],				
+							'question_id' => intval($option['question_id']),
+						]); 
+					} else {							
+						$test->question_options()
+							->where('id', $key)
+							->update([
+							'title' => $option['title'],				
+						]); 
+					}
+				}
 			}
 		}
 		
 		return redirect()->back();
-		
-	/*	return view('admin.tests.edit', [
-			'test' => $test, 
-			'test_questions' => $this->test_questions->forTest($test),		
-			'question_options' => $this->question_options->forTest($test),
-			'navbar_style' => 'navbar-inverse'
-		]);*/
 	}
-		
+	
 	/**
 	* Show JSON of options for the test for Angular JS
 	*
@@ -154,7 +159,20 @@ class AdminTestController extends Controller
 	* @return Response
 	*/	
 	public function test_options_json(Test $test){  
-		     return response()->json($this->question_options->forTest($test));
+			if (!empty($this->question_options->forTest($test))) {
+				$response_options = $this->question_options->forTest($test)->groupBy('question_id');
+				$hey = \DB::table('question_options')->orderBy('id', 'desc')->first();
+				if (!empty($hey)) {
+				$last_option_id = $hey->id;
+				}
+			}
+			if (!empty($response_options) && !empty($last_option_id)) {
+				$response_options->put('lastOptionId', $last_option_id);
+				
+				return response()->json($response_options);
+			} else {				
+				return null;
+			}
 	}
 }
 

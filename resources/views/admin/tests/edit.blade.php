@@ -14,9 +14,9 @@
 
 <div class="col-sm-12">
 
-	<div class="col-sm-3">
+	<div class="col-sm-1">
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-10">
 	
 		<form action="{{ url('/admin/edit/'.$test->id) }}" method="POST" class="form-horizontal">
 		{{ csrf_field() }}
@@ -54,15 +54,15 @@
 		</form>
 		
 	</div>
-	<div class="col-sm-3">
+	<div class="col-sm-1">
 	</div>
 	
 </div>
 
 <div class="col-sm-12">
-	<div class="col-sm-3">
+	<div class="col-sm-1">
 	</div>
-	<div class="col-sm-6">	
+	<div class="col-sm-10">	
 	
 		<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
 		
@@ -74,7 +74,7 @@
 					Questions for the test
 				</div>
 
-				<div class="panel-body" ng-app="angularjs-starter" ng-controller="MainCtrl">
+				<div class="panel-body" ng-app="angularjs-starter" ng-controller="MainCtrl" ng-init="init({{ $test->id }})">
 						
 					<form action="{{ url('/admin/add_option/'.$test->id) }}" method="POST" class="form-horizontal">
 
@@ -113,56 +113,25 @@
 										<td class="table-text">	
 										
 											<div class="form-group">
-											
-												{{--*/ $options_array = $question_options->where('question_id', $test_questions[$i]->id) /*--}}
 												
-												@foreach ($options_array as $question_option)
-													<!-- <fieldset  style="margin-bottom:10px;">
-														<div class="col-sm-9" style="margin-bottom:10px;">											
-															<input type="text" name="options[{{ $question_option->id }}][title]" class="form-control" value="{{ $question_option->title }}">
-															<input type="hidden" name="options[{{ $question_option->id }}][option_id]" class="form-control" value="{{ $question_option->id }}">	
-														</div>													
-														<div class="col-sm-3">
-															<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, {{ $question_option->id }})" class="btn btn-danger">X</button> 
-														</div>
-													</fieldset> -->
-												@endforeach	
-												
-												<fieldset data-ng-repeat="angularOption in angularOptionsArray" style="margin-bottom:10px;">
+												<fieldset data-ng-repeat="angularOption in angularOptionsArray[{{ $test_questions[$i]->id }}]" style="margin-bottom:10px;">
 													<div class="col-sm-9">
 														<input type="text" name="options[@{{ angularOption.id }}][title]" class="form-control" value="@{{ angularOption.title}}">
-														<input type="hidden" name="options[@{{ angularOption.id }}][question_id]" class="form-control" value="{{ $test_questions[$i]->id }}">							
-														<input type="hidden" name="options[@{{ angularOption.id }}][option_id]" class="form-control" value="0">	
+														<input type="hidden" name="options[@{{ angularOption.id }}][question_id]" value="{{ $test_questions[$i]->id }}">							
+														<input type="hidden" name="options[@{{ angularOption.id }}][new_option]" value="@{{ angularOption.newOption }}">	
 													</div>
 													<div class="col-sm-3">
-														<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, angOption.id)" class="btn btn-danger">X</button> 
+														<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, angularOption.id)" class="btn btn-danger">X</button> 
 													</div>
 													<br>
-												</fieldset>
+												</fieldset>	
 												
 												<div class="col-sm-9">												
 													<button class="btn btn-info" ng-click="addNewOption($event, {{ $test_questions[$i]->id }})">
 														Add OPTIONS
 													</button>
 												</div> 
-												
-												<!--<fieldset data-ng-repeat="angOption in angOptions[{{ $test_questions[$i]->id }}]" style="margin-bottom:10px;">
-													<div class="col-sm-9">
-														<input type="text" name="options[@{{ angOption.id }}][title]" placeholder="Enter Option text" class="form-control">
-														<input type="hidden" name="options[@{{ angOption.id }}][question_id]" class="form-control" value="{{ $test_questions[$i]->id }}">							
-														<input type="hidden" name="options[@{{ angOption.id }}][option_id]" class="form-control" value="0">							
-													</div>
-													<div class="col-sm-3">
-														<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, angOption.id)" class="btn btn-danger">X</button> 
-													</div>
-													<br>
-												</fieldset>
-												
-												<div class="col-sm-9">												
-													<button class="btn btn-info" ng-click="addNewOption($event, {{ $test_questions[$i]->id }}, {{ count($options_array) }})">
-														Add OPTIONS
-													</button>
-												</div>	-->
+												 
 													
 											</div> 
 
@@ -172,6 +141,8 @@
 							</tbody>
 						</table>
 
+						<input type="hidden" name="options_to_delete[]" value="@{{ angularOptionsToDelete }}">
+												
 					</form>
 				</div>
 			</div>
@@ -179,21 +150,10 @@
 
 	</div>
 
-	<div class="col-sm-3">
+	<div class="col-sm-1">
 	</div>
 </div>
-
-<div class="col-sm-12">
-
-		<div class="col-sm-3">
-		</div>
-		<div class="col-sm-6">	
-		
-		</div>	
-		<div class="col-sm-3">
-		</div>
-
-</div> 
+ 
  
  
 @endsection
