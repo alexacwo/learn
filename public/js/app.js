@@ -1,6 +1,4 @@
-
 var app = angular.module('angularjs-starter', [])
-<<<<<<< HEAD
         .constant('API_URL', 'http://localhost/step/laravel/learn/public/admin/test_options_json/');
 
 app.controller('MainCtrl', function($scope, $http, API_URL ) {
@@ -11,13 +9,6 @@ app.controller('MainCtrl', function($scope, $http, API_URL ) {
 	console.log($scope.apiTestId);
   
     $http.get(API_URL +  $scope.apiTestId)
-=======
-        .constant('API_URL', 'http://localhost/laravel/learn/public/admin/test_options_json/1');
-
-app.controller('MainCtrl', function($scope, $http, API_URL ) {
- 
-    $http.get(API_URL)
->>>>>>> 08759e04d2d6cdbd0ba39c1ae40dd41c115587d4
 		.success(function(response) {
 		
 		 
@@ -27,7 +18,6 @@ app.controller('MainCtrl', function($scope, $http, API_URL ) {
 			
 			$scope.angularOptionsToDelete = [];
 			
-<<<<<<< HEAD
 			
 			if (response) {
 				$lastOptionId = $scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]]; 
@@ -64,22 +54,6 @@ app.controller('MainCtrl', function($scope, $http, API_URL ) {
 					
 				} else if ($scope.angularOptionsArray[$questionId].length < 8) {
 					 console.log(2); 
-=======
-			$lastOptionId = $scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]]; 
-			$scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]];
-			delete $scope.angularOptionsArray.lastId;	
-			
-			$scope.addNewOption = function($event, $questionId) {
-				
-				$event.preventDefault();				
-				
-				if ('undefined' === typeof $scope.angularOptionsArray[$questionId]) {
-					$scope.angularOptionsArray[$questionId] = [];
-				}
-					
-				if ($scope.angularOptionsArray[$questionId].length < 8) {
-					console.log($questionId);
->>>>>>> 08759e04d2d6cdbd0ba39c1ae40dd41c115587d4
 					
 					var newOption = {
 						id: $lastOptionId + 1,
@@ -92,11 +66,7 @@ app.controller('MainCtrl', function($scope, $http, API_URL ) {
 					$lastOptionId++;
 				} else {
 					alert('Sorry, no more than 8 options is allowed!');
-<<<<<<< HEAD
 				} 
-=======
-				}
->>>>>>> 08759e04d2d6cdbd0ba39c1ae40dd41c115587d4
 			};
 
 			$scope.removeOption = function($event, $questionId, $optionId) {
@@ -117,8 +87,5 @@ app.controller('MainCtrl', function($scope, $http, API_URL ) {
    
 	});	
 
-<<<<<<< HEAD
   };
-=======
->>>>>>> 08759e04d2d6cdbd0ba39c1ae40dd41c115587d4
 }); 
