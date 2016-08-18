@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Task;
+use App\Test;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\TaskRepository;
+use App\Repositories\TestRepository;
+use App\Repositories\TestQuestionsRepository;
+use App\Repositories\QuestionOptionsRepository;
 
 class ClientController extends Controller
 {
@@ -20,14 +22,17 @@ class ClientController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  TaskRepository  $tasks
+	 * @param  TestQuestionsRepository $test_questions
+	 * @param  QuestionOptionsRepository $question_options
      * @return void
      */
-    public function __construct(TaskRepository $tasks)
+    public function __construct(TestQuestionsRepository $test_questions, QuestionOptionsRepository $question_options)
     {
         $this->middleware('auth');
 		
-       // $this->tasks = $tasks;
+        $this->test_questions = $test_questions;
+		
+		$this->question_options = $question_options;
     }
 
     /**
@@ -38,11 +43,28 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        return view('client.index'/*, [
-            'tasks' => $this->tasks->forUser($request->user())
-        ]*/);
+		$tests = Test::all();
+		
+        return view('client.index', [
+            'tests' => $tests
+        ]);
     }
-	
+			
+	/**
+	* View test.
+	*
+	* @param  Test $test
+	* @return Response
+	*/
+	public function pass_test(Test $test)
+	{
+		return view('client.pass', [
+			'test' => $test,		
+			'test_questions' => $this->test_questions->forTest($test),
+			'question_options' => $this->question_options->forTest($test),
+			'navbar_style' => 'navbar-inverse'
+		]);
+	}
 	/**
 	* Create a new task.
 	*

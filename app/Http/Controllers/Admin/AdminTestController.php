@@ -112,7 +112,8 @@ class AdminTestController extends Controller
 	* @param  Request  $request
 	* @return Response
 	*/
-	public function add_option(Test $test, Request $request)	{		
+	public function add_option(Test $test, Request $request) {		
+		
 		
 		if (!empty($request->options_to_delete)) {
 			$options_to_delete_object = $request->options_to_delete;
@@ -126,8 +127,7 @@ class AdminTestController extends Controller
 		}
 		
 		$options = $request->options;
-		
-	//	 dd($options);
+	  
 		if (!empty($options)) {
 			foreach ($options as $key => $option) {	
 			
@@ -135,7 +135,7 @@ class AdminTestController extends Controller
 					if (!empty($option['new_option'])) {			
 						$test->question_options()->create([
 							'title' => $option['title'],				
-							'question_id' => intval($option['question_id']),
+							'question_id' => intval($option['question_id'])
 						]); 
 					} else {							
 						$test->question_options()
@@ -145,9 +145,25 @@ class AdminTestController extends Controller
 						]); 
 					}
 				}
-			}
+			}			
 		}
 		
+		$correct_answers = $request->correct_answers; 
+		
+		if (!empty($correct_answers)) {
+			foreach ($correct_answers as $key => $correct_answer) {	
+			
+				if (!empty($correct_answer) && $correct_answer[0] != '?') {							
+						$test->test_questions()
+							->where('id', $key)
+							->update([
+							'correct_answers' => json_encode($correct_answer),				
+						]); 
+					
+				}
+			}			
+		}
+		 
 		return redirect()->back();
 	}
 	
@@ -160,10 +176,12 @@ class AdminTestController extends Controller
 	*/	
 	public function test_options_json(Test $test){  
 			if (!empty($this->question_options->forTest($test))) {
-				$response_options = $this->question_options->forTest($test)->groupBy('question_id');
-				$hey = \DB::table('question_options')->orderBy('id', 'desc')->first();
-				if (!empty($hey)) {
-				$last_option_id = $hey->id;
+				$response_options = $this->question_options->forTest($test)->groupBy('question_id');				 
+				
+				$last_option = \DB::table('question_options')->orderBy('id', 'desc')->first();
+				
+				if (!empty($last_option)) {					
+					$last_option_id = $last_option->id;
 				}
 			}
 			if (!empty($response_options) && !empty($last_option_id)) {

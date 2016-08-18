@@ -21,6 +21,8 @@ Route::auth();
 Route::get('/', 'ClientController@index');
 Route::get('/home', 'ClientController@index');
 
+Route::get('/test/{test}', 'ClientController@pass_test');
+
 /* ADMIN side */
 
 Route::get('/admin', 'Admin\AdminMainController@index');

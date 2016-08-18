@@ -13,10 +13,11 @@ class CreateTestQuestionsTable extends Migration
     public function up()
     {
         Schema::create('test_questions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id');			
+			$table->integer('test_id')->unsigned()->index();
 			$table->string('title', 100);		
-			$table->string('type', 20);	
-			$table->integer('test_id')->unsigned()->index();						
+			$table->string('type', 20);			
+			$table->string('correct_answers', 255);							
             $table->timestamps();
         });
     }

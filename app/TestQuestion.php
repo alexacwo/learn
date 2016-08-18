@@ -13,7 +13,7 @@ class TestQuestion extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'type'];
+    protected $fillable = ['title', 'type', 'correct_answers'];
 
     /**
      * Get the test that owns the test option.

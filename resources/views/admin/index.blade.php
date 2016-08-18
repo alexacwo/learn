@@ -40,7 +40,7 @@
     @if (count($tests) > 0)
         <div class="panel panel-default">
             <div class="panel-heading">
-                Current Tasks
+                Current Tests
             </div>
 
             <div class="panel-body">

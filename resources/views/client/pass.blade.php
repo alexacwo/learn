@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('navbar')
 	<li><strong class="text-primary" style="padding: 15px 15px; float: left; text-transform:uppercase;">CLIENT SIDE</strong></li>
 	<li><a href="{{ url('/') }}">Tests</a></li>
@@ -19,31 +18,25 @@
 		</div>	
 		<div class="col-sm-6">	
 			 
-			<!-- Current Tasks -->
-			@if (count($tests) > 0)
+			@for ($i = 0; $i < count($test_questions); $i++)
+
+				<br><strong>QUESTION #{{ $i+1 }}:</strong>
+				<br><br>Title: {{ $test_questions[$i]->title }}
+				<br><br>Type: {{ $test_questions[$i]->type }}
+
+				<br><br>Options:
+				<br><br>
+				{{--*/ $options_array = $question_options->where('question_id', $test_questions[$i]->id) /*--}}
 				
-				<table class="table table-striped test-table">
-
-					<!-- Table Headings -->
-					<thead>
-						<th>	
-							A LIST OF TESTS:
-						</th>
-					</thead>
-
-					<!-- Table Body -->
-					<tbody>
-						@foreach ($tests as $test)
-							<tr>
-								<!-- Test Title -->
-								<td class="table-text">
-									<div>{{ Html::link('/test/'.$test->id, $test->title)}}</div>
-								</td>
-							</tr>
-						@endforeach
-					</tbody>
-				</table>
-			@endif
+				<ul>
+				@foreach ($options_array as $question_option)            
+					<li> {{ $question_option->title }}</li>
+				@endforeach
+				</ul>
+				
+				<hr style="width:100%;">
+			@endfor
+			 
 		</div>	
 		<div class="col-sm-3">
 		</div>		
