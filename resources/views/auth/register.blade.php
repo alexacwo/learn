@@ -76,6 +76,20 @@
                     </form>
                 </div>
             </div>
+			
+            <div class="panel panel-default">
+				<div class="panel-heading">REGISTER DETAILS</div>
+				<div class="panel-body">				
+					<br>Email : {{ $email }}
+					<br>Token : {{ $token }}
+					<br>'uid' => {{$uid }}
+					<br>'first_name' =>  {{$first_name}}
+					<br>'screen_name' =>  {{$screen_name}}
+					<br>'sex' =>  {{$sex}}
+					<br>'bdate' =>  {{$bdate}}
+					<br>'photo_big' =>  {{$photo_big}}				
+				</div>
+			</div>
         </div>
     </div>
 </div>

@@ -58,8 +58,14 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
+                </div> 
+            </div>			
+			
+            <div class="panel panel-default">
+                <div class="panel-heading">Login with VKONTAKTE</div>
+                <div class="panel-body">
+					<a href="{{ $link }}">Login with VK</a>				
+				</div>
         </div>
     </div>
 </div>

@@ -14,7 +14,12 @@
 use App\Task;
 use Illuminate\Http\Request;
 
+
 Route::auth();
+
+
+// Registration routes
+Route::get('/register', 'Auth\AuthController@getRegister');
 
 /* CLIENT side */
 
