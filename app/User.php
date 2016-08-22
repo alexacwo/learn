@@ -40,4 +40,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Test::class);
     }
+	
+			
+	/**
+     * Get all of the test results for the user
+     */
+    public function test_results()
+    {
+        return $this->hasMany(TestResult::class);
+    }
 }

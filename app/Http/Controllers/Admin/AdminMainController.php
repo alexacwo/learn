@@ -43,8 +43,11 @@ class AdminMainController extends Controller
 	 */
 	public function index(Request $request)
 	{
+		$tests = Test::all();
+		 
 		return view('admin.index', [
-            'tests' => $this->tests->forUser($request->user()),
+			'tests' => $tests,
+            /*'tests' => $this->tests->forUser($request->user()),*/
 			'navbar_style' => 'navbar-inverse'
         ]);
 	}

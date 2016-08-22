@@ -126,8 +126,10 @@ class AuthController extends Controller
 		$redirect_uri = 'http://localhost/step/laravel/learn/public/register'; // Адрес для редиректа после авторизации
 		
 		$token = '';
-		$email = '';	
-		$uid = '';
+		$email = '';
+		
+		$vk_id = '';		
+		$vk_user_image = '';
 		$first_name = '';
 		$screen_name = '';
 		$sex = '';
@@ -162,15 +164,17 @@ class AuthController extends Controller
 					$userInfo = $userInfo['response'][0];
 					$result = true;
 				}
-			}
-
+			} 
+			
 			if ($result) {
-				$uid = $userInfo['uid'];
-				$first_name = $userInfo['first_name'];
-				$screen_name = $userInfo['screen_name'];
-				$sex = $userInfo['sex'];
-				$bdate = $userInfo['bdate'];
-				$photo_big = $userInfo['photo_big'];
+				
+				$vk_id = $userInfo['uid'];
+				
+				if (isset($userInfo['first_name'])) $first_name = $userInfo['first_name'];
+				if (isset($userInfo['screen_name'])) $screen_name = $userInfo['screen_name'];
+				if (isset($userInfo['sex'])) $sex = $userInfo['sex'];
+				if (isset($userInfo['bdate'])) $bdate = $userInfo['bdate'];
+				if (isset($userInfo['photo_big'])) $vk_user_image = $userInfo['photo_big'];
 			}
 			
 		/*	return view('auth.register', [
@@ -187,20 +191,29 @@ class AuthController extends Controller
 			$vk_credentials = array(
 				"name" => $first_name,
 				"email" => $email,
+				"vk_id" => $vk_id,
+				"vk_user_image" => $vk_user_image,
 				"password" => null				
 			);
 			
-			$x = Auth::attempt(array('email' => $email, 'password' => '$2y$10$KKS5OR8LrJszcVtbOAr9ROd9dtWxHIWunqN/jFvG.zPDCKb12.xHO'));
-			var_dump($x);
-			
-			if (Auth::attempt(['email' => $email, 'password' => null])) {
+			/* var_dump($vk_credentials);
+			 var_dump($first_name);
+			 var_dump($screen_name);
+			 var_dump($sex);
+			 var_dump($bdate);
+			 
+			 var_dump($photo_big);
+			 
+			 
+			*/ 
+			if (Auth::attempt(['email' => $email, 'vk_id' => $vk_id, 'password' => null])) {
 				// Authentication passed...
 				 return redirect()->intended('/');
 			}  else {
 				\Auth::guard($this->getGuard())->login($this->create($vk_credentials));
-			} 
+			}  			
 			
-			//return redirect($this->redirectPath());
+			return redirect($this->redirectPath()); 
 		}	
 		
 		return view('auth.register', [
@@ -211,7 +224,7 @@ class AuthController extends Controller
 			'screen_name' => '',
 			'sex' => '',
 			'bdate' => '',
-			'photo_big' => ''
+			'vk_user_image' => '',
 		]);
     }
 	 

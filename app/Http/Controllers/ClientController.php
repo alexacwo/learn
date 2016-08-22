@@ -65,6 +65,26 @@ class ClientController extends Controller
 			'navbar_style' => 'navbar-inverse'
 		]);
 	}
+	
+				
+	/**
+	* Create test result
+	*
+	* @param  Test $test
+	* @param  Request  $request
+	* @return Response
+	*/
+	public function test_result_create(Test $test, Request $request)	
+	{		
+		var_dump($request->test_answers);
+		
+		$request->user()->test_results()->create([
+			'test_id' => $request->test_id,	
+			'test_answers' => json_encode($request->test_answers),	
+		]);
+		
+		return redirect('/');
+	}
 	/**
 	* Create a new task.
 	*

@@ -47,10 +47,6 @@ class AdminTestController extends Controller
 	*/
 	public function test_create(Request $request)
 	{
-		$this->validate($request, [
-			'title' => 'required|max:255',
-		]); 
-		
 		$request->user()->tests()->create([
 			'title' => $request->title,	
 		]);
@@ -112,8 +108,7 @@ class AdminTestController extends Controller
 	* @param  Request  $request
 	* @return Response
 	*/
-	public function add_option(Test $test, Request $request) {		
-		
+	public function add_option(Test $test, Request $request) {				
 		
 		if (!empty($request->options_to_delete)) {
 			$options_to_delete_object = $request->options_to_delete;

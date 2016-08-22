@@ -4,7 +4,6 @@
 	<li><a href="{{ url('/') }}">Tests</a></li>
 	<li><a href="{{ url('/') }}">Reading</a></li>
 	<li><a href="{{ url('/') }}">Audio files</a></li>
-	
 	@if (Auth::user()->role == 'admin')
 		<li><a href="{{ url('/admin') }}">ADMIN DASHBOARD</a></li>
 	@endif
@@ -16,26 +15,42 @@
         
 		<div class="col-sm-3">
 		</div>	
-		<div class="col-sm-6">	
+		<div class="col-sm-6">
+		
+			<form action="{{ url('/test_result_create/'.$test->id) }}" method="POST" class="form-horizontal">
+				{{ csrf_field() }}
 			 
-			@for ($i = 0; $i < count($test_questions); $i++)
+				@for ($i = 0; $i < count($test_questions); $i++)
 
-				<br><strong>QUESTION #{{ $i+1 }}:</strong>
-				<br><br>Title: {{ $test_questions[$i]->title }}
-				<br><br>Type: {{ $test_questions[$i]->type }}
-
-				<br><br>Options:
-				<br><br>
-				{{--*/ $options_array = $question_options->where('question_id', $test_questions[$i]->id) /*--}}
+					<br><strong>QUESTION #{{ $i+1 }}:</strong>
+					<br><br>{{ $test_questions[$i]->title }}
+					
+					<p>
+						@if ($test_questions[$i]->type == 'radio' || $test_questions[$i]->type == 'checkbox')						
+						
+							{{--*/ $options_array = $question_options->where('question_id', $test_questions[$i]->id) /*--}}
+							
+							<br><strong>Options:</strong>
+							
+							<br>
+							@foreach ($options_array as $question_option)    
+								<input type="{{	$test_questions[$i]->type }}" name="test_answers[{{$test_questions[$i]->id}}][]" value="{{ $question_option->id }}"> {{ $question_option->title }}<Br>
+							@endforeach
+						@elseif ($test_questions[$i]->type == 'textarea')
+								<br><textarea rows="5" cols="50" name="test_answers[{{$test_questions[$i]->id}}][]"></textarea>
+						@endif
+					</p>
+							
+					<hr style="width:100%;">
+				@endfor			
 				
-				<ul>
-				@foreach ($options_array as $question_option)            
-					<li> {{ $question_option->title }}</li>
-				@endforeach
-				</ul>
+				<input type="hidden" name="test_id" value="{{ $test->id }}">
 				
-				<hr style="width:100%;">
-			@endfor
+				<button type="submit" class="btn btn-primary">
+					Submit
+				</button>
+				
+			</form>
 			 
 		</div>	
 		<div class="col-sm-3">

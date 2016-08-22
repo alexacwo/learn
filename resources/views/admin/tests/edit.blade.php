@@ -36,8 +36,8 @@
 					<div class="col-sm-6">
 						<label for="test-type">Question type:</label>
 						<select name="type" id="test-type" class="form-control">
-							<option selected value="checkboxes">Checkboxes</option>
-							<option value="radiobuttons">Radio buttons</option>
+							<option selected value="checkbox">Checkboxes</option>
+							<option value="radio">Radio buttons</option>
 							<option value="textarea">Textarea</option>
 						</select>					
 						<br>If there can be multiple options, select 'checkboxes'
