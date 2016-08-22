@@ -23,14 +23,15 @@ Route::get('/register', 'Auth\AuthController@getRegister');
 
 /* CLIENT */
 
-Route::get('/', 'ClientController@index');
-Route::get('/home', 'ClientController@index');
+Route::get('/', 'Client\ClientController@index');
+Route::get('/home', 'Client\ClientController@index');
 
-Route::get('/test/{test}', 'ClientController@pass_test');
+Route::get('/test/{test}', 'Client\ClientController@pass_test');
 
-/* CLIENT -- TESTS: Create the test result */
+/* CLIENT -- TESTS: Create the test result and show test results */
 
-Route::post('/test_result_create/{test}', 'ClientController@test_result_create');
+Route::post('/test_result_create/', 'Client\ClientController@create_test_result');
+Route::get('/test_result/{test_result}/', 'Client\ClientController@show_test_result');
 
 /* ADMIN */
 

@@ -17,7 +17,7 @@
 		</div>	
 		<div class="col-sm-6">
 		
-			<form action="{{ url('/test_result_create/'.$test->id) }}" method="POST" class="form-horizontal">
+			<form action="{{ url('/test_result_create/') }}" method="POST" class="form-horizontal">
 				{{ csrf_field() }}
 			 
 				@for ($i = 0; $i < count($test_questions); $i++)

@@ -58,12 +58,18 @@ class AuthController extends Controller
         ]);
     }
 
-
+    /**
+     * Create a new user
+     *
+     * @param  array  $data
+     */
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
-            'email' => $data['email'],
+            'email' => $data['email'],			
+            'vk_id' => $data['vk_id'],
+            'vk_user_image' => $data['vk_user_image'],
             'password' => bcrypt($data['password']),
         ]);
     }
@@ -147,10 +153,6 @@ class AuthController extends Controller
 
 			$token = json_decode(file_get_contents('https://oauth.vk.com/access_token' . '?' . urldecode(http_build_query($params))), true);
 			
-			if (isset($token['email'])) {
-				$email = $token['email'];
-			}
-	
 			if (isset($token['access_token'])) {
 				$params = array(
 					'uids'         => $token['user_id'],
@@ -164,29 +166,24 @@ class AuthController extends Controller
 					$userInfo = $userInfo['response'][0];
 					$result = true;
 				}
+				
+				if (isset($token['email'])) {
+					$email = $token['email'];
+				} else {
+					$email = $userInfo['uid'].'@vk.com';
+				}
+			
+				if ($result) {
+					
+					$vk_id = $userInfo['uid'];
+					
+					if (isset($userInfo['first_name'])) $first_name = $userInfo['first_name'];
+					if (isset($userInfo['screen_name'])) $screen_name = $userInfo['screen_name'];
+					if (isset($userInfo['sex'])) $sex = $userInfo['sex'];
+					if (isset($userInfo['bdate'])) $bdate = $userInfo['bdate'];
+					if (isset($userInfo['photo_big'])) $vk_user_image = $userInfo['photo_big'];
+				}
 			} 
-			
-			if ($result) {
-				
-				$vk_id = $userInfo['uid'];
-				
-				if (isset($userInfo['first_name'])) $first_name = $userInfo['first_name'];
-				if (isset($userInfo['screen_name'])) $screen_name = $userInfo['screen_name'];
-				if (isset($userInfo['sex'])) $sex = $userInfo['sex'];
-				if (isset($userInfo['bdate'])) $bdate = $userInfo['bdate'];
-				if (isset($userInfo['photo_big'])) $vk_user_image = $userInfo['photo_big'];
-			}
-			
-		/*	return view('auth.register', [
-				'token' => json_encode($token),
-				'email' => $email,
-				'uid' => $uid,
-				'first_name' => $first_name,
-				'screen_name' => $screen_name,
-				'sex' => $sex,
-				'bdate' => $bdate,
-				'photo_big' => $photo_big
-			]);*/			
 			
 			$vk_credentials = array(
 				"name" => $first_name,
@@ -196,16 +193,6 @@ class AuthController extends Controller
 				"password" => null				
 			);
 			
-			/* var_dump($vk_credentials);
-			 var_dump($first_name);
-			 var_dump($screen_name);
-			 var_dump($sex);
-			 var_dump($bdate);
-			 
-			 var_dump($photo_big);
-			 
-			 
-			*/ 
 			if (Auth::attempt(['email' => $email, 'vk_id' => $vk_id, 'password' => null])) {
 				// Authentication passed...
 				 return redirect()->intended('/');

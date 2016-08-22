@@ -151,9 +151,10 @@
 													ng-model="angularCorrectAnswersArray[{{ $test_questions[$i]->id }}]" 
 													ng-options="angularOption.title for angularOption in angularOptionsArray[{{ $test_questions[$i]->id }}] track by angularOption.id"
 													ng-show="showOptions ('{{ $test_questions[$i]->type }}')"
-														 @if ($test_questions[$i]->type == 'checkboxes') 
-												multiple
-											 @endif 
+													
+													@if ($test_questions[$i]->type == 'checkbox') 
+														multiple
+													@endif 
 												>
 												</select>
 												

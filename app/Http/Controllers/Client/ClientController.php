@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
 use App\Test;
+use App\TestResult;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,7 +33,7 @@ class ClientController extends Controller
 		
         $this->test_questions = $test_questions;
 		
-		$this->question_options = $question_options;
+		$this->question_options = $question_options;		
     }
 
     /**
@@ -62,7 +63,7 @@ class ClientController extends Controller
 			'test' => $test,		
 			'test_questions' => $this->test_questions->forTest($test),
 			'question_options' => $this->question_options->forTest($test),
-			'navbar_style' => 'navbar-inverse'
+			'navbar_style' => 'navbar-default'
 		]);
 	}
 	
@@ -70,21 +71,41 @@ class ClientController extends Controller
 	/**
 	* Create test result
 	*
-	* @param  Test $test
 	* @param  Request  $request
 	* @return Response
 	*/
-	public function test_result_create(Test $test, Request $request)	
+	public function create_test_result(Request $request)	
 	{		
-		var_dump($request->test_answers);
-		
-		$request->user()->test_results()->create([
+		$test_result = $request->user()->test_results()->create([
 			'test_id' => $request->test_id,	
 			'test_answers' => json_encode($request->test_answers),	
 		]);
 		
-		return redirect('/');
+		return redirect('/test_result/'.$test_result->id);
 	}
+	
+					
+	/**
+	* Show test result
+	*
+	* @param  TestResult $test_result
+	* @param  Request  $request
+	* @return Response
+	*/
+	public function show_test_result(TestResult $test_result, Request $request)	
+	{			
+		$correct_answers = \DB::table('test_questions')
+						 ->select('id', 'correct_answers')
+						 ->where('test_id', $test_result->test_id)
+						 ->get();
+					 
+		return view('client.test_result', [
+			'test_result' => $test_result,		
+			'correct_answers' => $correct_answers,
+			'navbar_style' => 'navbar-default'
+		]);
+	}
+	
 	/**
 	* Create a new task.
 	*

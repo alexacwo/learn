@@ -51,6 +51,13 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
+					
+					@if (!empty(Auth::user()->vk_user_image))
+						<li style="padding:10px;">
+							<img src=" {{ Auth::user()->vk_user_image }} " style="width:28px; height:28px; border-radius:14px;" />
+						</li>
+					@endif
+					
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
 						   <li><a href="{{ url('/register') }}">Register</a></li> 
