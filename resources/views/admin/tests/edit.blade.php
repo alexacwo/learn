@@ -49,7 +49,7 @@
 				<div class="form-group">
 					<div class="col-sm-12">
 						<button type="submit" class="btn btn-default">
-							<i class="fa fa-plus"></i> Add
+							<i class="fa fa-plus"></i> Add Question
 						</button>
 					</div>
 				</div>
@@ -79,7 +79,7 @@
 
 					<div class="panel-body">
 							
-						<form action="{{ url('/admin/add_option/'.$test->id) }}" method="POST" class="form-horizontal">
+						<form action="{{ url('/admin/edit_questions/'.$test->id) }}" method="POST" class="form-horizontal">
 
 						{{ csrf_field() }}
 
@@ -98,77 +98,89 @@
 									<th class="col-sm-1">Question number</th>
 									<th class="col-sm-1">Question id in the DB</th>
 									<th class="col-sm-2">Question TITLE</th>
-									<th class="col-sm-2">Question type</th>
+									<th class="col-sm-1">Question type</th>
 									<th class="col-sm-5">Options</th>
 									<th class="col-sm-1">Choose the correct answer</th>
+									<th class="col-sm-1">Remove question</th>
 								</thead>
 									
 								<tbody>
-									@for ($i = 0; $i < count($test_questions); $i++)
-										<tr>
-											<td class="table-text col-sm-1">								
-												{{ $i+1 }}
-											</td> 
-											<td class="table-text col-sm-1">								
-												{{ $test_questions[$i]->id }}
-											</td> 
-											<td class="table-text col-sm-2">								
-												{{ $test_questions[$i]->title }}
-											</td>
-											<td class="table-text question-type col-sm-2">								
-												{{ $test_questions[$i]->type }}
-											</td>									
-											<td class="table-text col-sm-5">	
-											
-												<div class="form-group" ng-show="showOptions ('{{ $test_questions[$i]->type }}')">
-													
-													<fieldset data-ng-repeat="angularOption in angularOptionsArray[{{ $test_questions[$i]->id }}]" style="margin-bottom:10px;">
-														<div class="col-sm-9">
-															<input type="text" name="options[@{{ angularOption.id }}][title]" class="form-control" value="@{{ angularOption.title}}">
-															<input type="hidden" name="options[@{{ angularOption.id }}][question_id]" value="{{ $test_questions[$i]->id }}">							
-															<input type="hidden" name="options[@{{ angularOption.id }}][new_option]" value="@{{ angularOption.newOption }}">	
-														</div>
-														<div class="col-sm-3">
-															<button ng-click="removeOption($event, {{ $test_questions[$i]->id }}, angularOption.id)" class="btn btn-danger">X</button> 
-														</div>
-														<br>
-																
-													</fieldset>	
-													
-													<div class="col-sm-9">												
-														<button class="btn btn-info" ng-click="addNewOption($event, {{ $test_questions[$i]->id }})">
-															Add OPTIONS
-														</button>
-													</div>		
-														
-												</div> 
-	
-											</td>	
-											<td class="table-text col-sm-1">
-												 <select
-													class="correct-answer"
-													name="correct_answers[{{ $test_questions[$i]->id }}][]"
-													ng-model="angularCorrectAnswersArray[{{ $test_questions[$i]->id }}]" 
-													ng-options="angularOption.title for angularOption in angularOptionsArray[{{ $test_questions[$i]->id }}] track by angularOption.id"
-													ng-show="showOptions ('{{ $test_questions[$i]->type }}')"
-													
-													@if ($test_questions[$i]->type == 'checkbox') 
-														multiple
-													@endif 
-												>
-												</select>
+									<tr ng-repeat="(i, angularQuestion) in angularQuestionsArray">
+										<td class="table-text col-sm-1">								
+											@{{ i*1 }}
+										</td> 
+										<td class="table-text col-sm-1">
+											@{{ angularQuestion[0].id }}
+										</td> 
+										<td class="table-text col-sm-2">								
+											<input type="text" name="questions[@{{angularQuestion[0].id}}][title]" class="form-control" value="@{{ angularQuestion[0].title }}">
+										</td>
+										<td class="table-text question-type col-sm-2">
+											<select name="questions[@{{angularQuestion[0].id}}][type]" class="form-control">
+												<option ng-selected="angularQuestion[0].type == 'checkbox'" value="checkbox">Checkboxes</option>
+												<option ng-selected="angularQuestion[0].type == 'radio'" value="radio">Radio buttons</option>
+												<option ng-selected="angularQuestion[0].type == 'textarea'" value="textarea">Textarea</option>
+											</select>	
+										</td>									
+										<td class="table-text col-sm-5">	
+										
+											<div class="form-group" ng-show="showOptions ('angularQuestion[0].type')">
 												
-												 
+												<fieldset data-ng-repeat="angularOption in angularOptionsArray[angularQuestion[0].id]" style="margin-bottom:10px;">
+													<div class="col-sm-9">
+														<input type="text" name="options[@{{ angularOption.id }}][title]" class="form-control" value="@{{ angularOption.title}}">
+														<input type="hidden" name="options[@{{ angularOption.id }}][question_id]" value="@{{ angularQuestion[0].id }}">							
+														<input type="hidden" name="options[@{{ angularOption.id }}][new_option]" value="@{{ angularOption.newOption }}">	
+													</div>
+													<div class="col-sm-3">
+														<button ng-click="removeOption($event, angularQuestion[0].id, angularOption.id)" class="btn btn-warning">X</button> 
+													</div>
+													<br>
+															
+												</fieldset>	
+												
+												<div class="col-sm-9">												
+													<button class="btn btn-info" ng-click="addNewOption($event, angularQuestion[0].id)">
+														Add OPTIONS
+													</button>
+												</div>		
+													
+											</div> 
 
-											</td>
-										</tr>
-									@endfor
+										</td>	
+										<td class="table-text col-sm-1">
+										 
+											 <select
+												class="correct-answer"
+												name="correct_answers[@{{angularQuestion[0].id}}][]"
+												ng-model="angularCorrectAnswersArray[angularQuestion[0].id]" 
+												ng-options="angularOption.title for angularOption in angularOptionsArray[angularQuestion[0].id] track by angularOption.id"
+												ng-show="showOptions ('@{{ angularQuestion[0].type }}')"	
+												ng-if="angularQuestion[0].type == 'checkbox'" multiple
+											>
+											</select>
+																					 
+											 <select
+												class="correct-answer"
+												name="correct_answers[@{{angularQuestion[0].id}}]"
+												ng-model="angularCorrectAnswersArray[angularQuestion[0].id]" 
+												ng-options="angularOption.title for angularOption in angularOptionsArray[angularQuestion[0].id] track by angularOption.id"
+												ng-show="showOptions ('@{{ angularQuestion[0].type }}')"	
+												ng-if="angularQuestion[0].type == 'radio'"
+											>
+											</select>
+										
+										</td>
+										<td class="table-text col-sm-1">	
+											<button ng-click="removeQuestion($event, angularQuestion[0].id)" class="btn btn-danger">X</button> 
+										</td> 
+									</tr>
 									
-									@{{ angularCorrectAnswersArray }}
 								</tbody>
 							</table>
 
 							<input type="hidden" name="options_to_delete[]" value="@{{ angularOptionsToDelete }}">
+							<input type="hidden" name="questions_to_delete[]" value="@{{ angularQuestionsToDelete }}">
 													
 						</form>
 					</div>

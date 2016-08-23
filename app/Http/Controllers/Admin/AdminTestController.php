@@ -101,14 +101,43 @@ class AdminTestController extends Controller
 	
 		
 	/**
-	* Add Option
+	* Edit Questions
 	*
 	* @param  Test $test
 	* @param  TestQuestionsRepository $test_questions
 	* @param  Request  $request
 	* @return Response
 	*/
-	public function add_option(Test $test, Request $request) {				
+	public function edit_questions(Test $test, Request $request) {				
+				
+		/* Edit Questions */
+		
+		$questions = $request->questions;
+	  
+		if (!empty($questions)) {
+			foreach ($questions as $key => $question) {	
+			
+				$test->test_questions()
+							->where('id', $key)
+							->update([
+								'title' => $question['title'],	
+								'type' => $question['type'],								
+							]); 
+			}
+		}
+		
+		if (!empty($request->questions_to_delete)) {
+			$questions_to_delete_object = $request->questions_to_delete;
+		
+			$brackets = array("[","]");
+			$questions_to_delete_string = str_replace($brackets, "", $questions_to_delete_object[0]);
+
+			$questions_to_delete = explode(",", $questions_to_delete_string);
+			
+			\DB::table('test_questions')->whereIn('id', $questions_to_delete)->delete();
+		}
+		
+		/* Edit Options */
 		
 		if (!empty($request->options_to_delete)) {
 			$options_to_delete_object = $request->options_to_delete;
@@ -163,29 +192,50 @@ class AdminTestController extends Controller
 	}
 	
 	/**
-	* Show JSON of options for the test for Angular JS
+	* Show JSON of questions and options for the test for Angular JS
 	*
 	* @param  Test $test
 	* @param  Request  $request
 	* @return Response
 	*/	
-	public function test_options_json(Test $test){  
-			if (!empty($this->question_options->forTest($test))) {
-				$response_options = $this->question_options->forTest($test)->groupBy('question_id');				 
-				
-				$last_option = \DB::table('question_options')->orderBy('id', 'desc')->first();
-				
-				if (!empty($last_option)) {					
-					$last_option_id = $last_option->id;
-				}
+	public function test_crud_json(Test $test)
+	{  				
+		/* Get questions for the test */
+		
+		$questions = $this->test_questions->forTest($test);
+		
+		if (!empty($questions)) {
+			$response_questions = $questions->groupBy('id');		
+		}		
+			
+		/* Get question options for the test */
+		
+		$options = $this->question_options->forTest($test);
+		
+		if (!empty($options)) {
+			$response_options = $options->groupBy('question_id');				 
+			
+			$last_option = \DB::table('question_options')->orderBy('id', 'desc')->first();
+			
+			if (!empty($last_option)) {					
+				$last_option_id = $last_option->id;
 			}
-			if (!empty($response_options) && !empty($last_option_id)) {
-				$response_options->put('lastOptionId', $last_option_id);
-				
-				return response()->json($response_options);
-			} else {				
-				return null;
-			}
+		}
+		
+		$collection = array('questions' => $response_questions, 'options' => $response_options, 'lastOptionId' => $last_option_id);
+		// dd($response_questions);
+		 
+	 //$response_questions->put$response_options);
+		
+		return response()->json($collection);
+		
+		/*if (!empty($response_options) && !empty($last_option_id)) {
+			//$response_options->put('lastOptionId', $last_option_id);
+			
+			return response()->json($response_options);
+		} else {				
+			return null;
+		}*/
 	}
 }
 

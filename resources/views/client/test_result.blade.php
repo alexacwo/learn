@@ -22,42 +22,86 @@
 			@if (!empty($test_result))
 				
 				@foreach (json_decode($test_result->test_answers) as $question_id => $test_answers) 
+				
+					{{--*/ $correct_answers = json_decode($correct_answers_array[$question_id]->correct_answers) /*--}}
+					 
+					@if (is_array($correct_answers))
+						@if (empty (array_diff( $correct_answers , $test_answers)) && !empty($correct_answers))
+							<div class="panel panel-success">
+						@else 
+							<div class="panel panel-danger">
+						@endif						
+					@else 
+						@if (intval($correct_answers) == intval($test_answers[0]) && !empty($correct_answers))
+							<div class="panel panel-success">
+						@elseif (empty($correct_answers))
+							<div class="panel panel-warning">
+						@else
+							<div class="panel panel-danger">
+						@endif
+					@endif
 					
-					<strong>Question # {{ $question_id }}<br></strong>
 					
-					
-					
-					@foreach ($test_answers as $answer_id => $value) 
-						<br>{{ $value }}
-					@endforeach
-					
-					<br><br>
+						<div class="panel-heading">
+							<strong>Question # {{ $question_id }}</strong>
+						</div>
+
+						<div class="panel-body">
+					 
+							{{  $correct_answers_array[$question_id]->title }}<br>
+							
+							<br><strong>Your answer(s):</strong>
+							@foreach ($test_answers as $answer_id => $value) 
+								
+								@if (is_numeric($value))							
+									<br>{{ $question_options[$value]->title }}
+								@else
+									<br>{{ $value }}
+								@endif
+								
+							@endforeach
+								
+							
+							@if (!empty($correct_answers))
+									
+							<br><br><span style="color:green;"><strong>Correct answer(s):</strong></span>
+									@if (is_array($correct_answers))
+										@foreach ($correct_answers as $value)
+											<br>{{ $question_options[$value]->title }}
+										@endforeach
+									@else
+											<br>{{ $question_options[intval($correct_answers)]->title }}						
+									@endif
+								@endif
+							</div>
+						</div>
 				@endforeach
 			
 			@endif
 			
-		<strong>CORRECT ANSWERS:</strong><br><br>		
-				
-		@if (!empty($correct_answers))
+	<!--	<strong>CORRECT ANSWERS:</strong><br>	
+		
+		@if (!empty($correct_answers_array))
 			
+			@foreach ($correct_answers_array as $ca) 
 			
-			@foreach ($correct_answers as $ca) 
-			
-					<br>QUESTION # {{	$ca->id	}}
+					<br><strong>QUESTION # {{	$ca->id	}}</strong>
 			 		
-					{{--*/ $correct_answers_array = json_decode($ca->correct_answers) /*--}}
+					{{--*/ $correct_answers = json_decode($ca->correct_answers) /*--}}
 					
-					@if (!empty ($correct_answers_array))						
+					@if (is_array ($correct_answers))						
 					
-						<br><br>ANSWERS:
-						@foreach ($correct_answers_array as $correct_answer) 
+						<br><br><strong>ANSWERS:</strong>
+						@foreach ($correct_answers as $correct_answer) 
 
 							{{ $correct_answer }}
 
 						@endforeach
+					@else
+						<br><strong>ANSWER:</strong> {{ $correct_answers }}<br>
 					@endif
 			@endforeach
-		@endif
+		@endif -->
 			 
 		</div>	
 		<div class="col-sm-3">

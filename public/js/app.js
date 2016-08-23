@@ -1,5 +1,5 @@
 var app = angular.module('angularjs-starter', [])
-        .constant('API_URL', 'http://localhost/step/laravel/learn/public/admin/test_options_json/');
+        .constant('API_URL', 'http://localhost/step/laravel/learn/public/admin/test_crud_json/');
 
 app.controller('MainController', function($scope, $http, API_URL ) { 
  
@@ -23,24 +23,36 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 			.get(API_URL +  $scope.apiTestId)
 			.then(function successCallback(response) {
 
+				/*console.log(response.data.lastOptionId);
+				console.log(response.data.questions);
+				console.log(response.data.options);*/
+			
 				/* Responded with an array of Options object */
 				if (response.data) {		 
 
-					$scope.angularOptionsArray = response.data;	
+					$scope.angularQuestionsArray = response.data.questions;	
+					$scope.angularOptionsArray = response.data.options;	
 
-					$lastOptionId = $scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]]; 
-					$scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]];
-					delete $scope.angularOptionsArray.lastId;	
+					$lastOptionId = response.data.lastOptionId;//$scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]]; 
+					/*$scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]];
+					delete $scope.angularOptionsArray.lastId;*/	
 					
 				} else {
 					var $lastOptionId = 0;
 					$scope.angularOptionsArray = new Array();
-				}
-				
-				console.log($scope.angularOptionsArray);
+				}		
 
+				$scope.angularQuestionsToDelete = [];			
 				$scope.angularOptionsToDelete = [];			
-
+				
+				/////////////////////////////////////////////////////////////
+				///////////////////QUESTIONS/////////////////////////////////
+				/////////////////////////////////////////////////////////////
+				
+				/////////////////////////////////////////////////////////////
+				///////////////////OPTIONS///////////////////////////////////
+				/////////////////////////////////////////////////////////////
+				
 				/* Add New Option */
 				$scope.addNewOption = function($event, $questionId) {
 
@@ -77,7 +89,17 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 							break;
 						}
 					} 
-				};	   
+				};	 
+
+				
+				/* Remove particular Question */
+				$scope.removeQuestion = function($event, $questionId) {
+					$event.preventDefault(); 
+				
+					$scope.angularQuestionsToDelete.push($questionId);
+					
+					delete $scope.angularQuestionsArray[$questionId];
+				};	 				
 
 			}, function errorCallback(response) {
 				console.log (response, 'Error occurred!!!');				

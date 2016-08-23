@@ -21,27 +21,31 @@
 				{{ csrf_field() }}
 			 
 				@for ($i = 0; $i < count($test_questions); $i++)
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<strong>QUESTION #{{ $i+1 }}:</strong>
+						</div>
 
-					<br><strong>QUESTION #{{ $i+1 }}:</strong>
-					<br><br>{{ $test_questions[$i]->title }}
-					
-					<p>
-						@if ($test_questions[$i]->type == 'radio' || $test_questions[$i]->type == 'checkbox')						
-						
-							{{--*/ $options_array = $question_options->where('question_id', $test_questions[$i]->id) /*--}}
+						<div class="panel-body">
+							{{ $test_questions[$i]->title }}
 							
-							<br><strong>Options:</strong>
-							
-							<br>
-							@foreach ($options_array as $question_option)    
-								<input type="{{	$test_questions[$i]->type }}" name="test_answers[{{$test_questions[$i]->id}}][]" value="{{ $question_option->id }}"> {{ $question_option->title }}<Br>
-							@endforeach
-						@elseif ($test_questions[$i]->type == 'textarea')
-								<br><textarea rows="5" cols="50" name="test_answers[{{$test_questions[$i]->id}}][]"></textarea>
-						@endif
-					</p>
-							
-					<hr style="width:100%;">
+							<p>
+								@if ($test_questions[$i]->type == 'radio' || $test_questions[$i]->type == 'checkbox')						
+								
+									{{--*/ $options_array = $question_options->where('question_id', $test_questions[$i]->id) /*--}}
+									
+									<br><strong>Options:</strong>
+									
+									<br>
+									@foreach ($options_array as $question_option)    
+										<input type="{{	$test_questions[$i]->type }}" name="test_answers[{{$test_questions[$i]->id}}][]" value="{{ $question_option->id }}"> {{ $question_option->title }}<Br>
+									@endforeach
+								@elseif ($test_questions[$i]->type == 'textarea')
+										<br><textarea rows="5" cols="50" name="test_answers[{{$test_questions[$i]->id}}][]"></textarea>
+								@endif
+							</p>
+						</div>
+					</div>
 				@endfor			
 				
 				<input type="hidden" name="test_id" value="{{ $test->id }}">

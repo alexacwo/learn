@@ -94,14 +94,24 @@ class ClientController extends Controller
 	*/
 	public function show_test_result(TestResult $test_result, Request $request)	
 	{			
-		$correct_answers = \DB::table('test_questions')
-						 ->select('id', 'correct_answers')
+		$correct_answers_array = collect(\DB::table('test_questions')
+						 ->select('id', 'title', 'correct_answers')
 						 ->where('test_id', $test_result->test_id)
-						 ->get();
-					 
+						 ->get()
+						 )->keyBy('id')
+						 ->all();		
+						 
+		$question_options = collect(\DB::table('question_options')
+						 ->select('id', 'title')
+						 ->where('test_id', $test_result->test_id)
+						 ->get()
+						 )->keyBy('id')
+						 ->all();
+						
 		return view('client.test_result', [
-			'test_result' => $test_result,		
-			'correct_answers' => $correct_answers,
+			'test_result' => $test_result,	
+			'question_options' => $question_options,					
+			'correct_answers_array' => $correct_answers_array,
 			'navbar_style' => 'navbar-default'
 		]);
 	}

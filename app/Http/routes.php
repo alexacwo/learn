@@ -44,10 +44,10 @@ Route::get('/admin/edit/{test}', 'Admin\AdminTestController@edit_test');
 
 Route::post('/admin/test_create', 'Admin\AdminTestController@test_create');
 Route::post('/admin/edit/{test}', 'Admin\AdminTestController@add_question');
-Route::post('/admin/add_option/{test}', 'Admin\AdminTestController@add_option');
+Route::post('/admin/edit_questions/{test}', 'Admin\AdminTestController@edit_questions');
 
 /* JSON information of available options for a given test for AngularJS */
 
-Route::get('/admin/test_options_json/{test}', 'Admin\AdminTestController@test_options_json');
+Route::get('/admin/test_crud_json/{test}', 'Admin\AdminTestController@test_crud_json');
 
 
