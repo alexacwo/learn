@@ -149,27 +149,27 @@
 
 										</td>	
 										<td class="table-text col-sm-1">
-										 
-											 <select
-												class="correct-answer"
-												name="correct_answers[@{{angularQuestion[0].id}}][]"
-												ng-model="angularCorrectAnswersArray[angularQuestion[0].id]" 
-												ng-options="angularOption.title for angularOption in angularOptionsArray[angularQuestion[0].id] track by angularOption.id"
-												ng-show="showOptions ('@{{ angularQuestion[0].type }}')"	
-												ng-if="angularQuestion[0].type == 'checkbox'" multiple
-											>
-											</select>
-																					 
-											 <select
-												class="correct-answer"
-												name="correct_answers[@{{angularQuestion[0].id}}]"
-												ng-model="angularCorrectAnswersArray[angularQuestion[0].id]" 
-												ng-options="angularOption.title for angularOption in angularOptionsArray[angularQuestion[0].id] track by angularOption.id"
-												ng-show="showOptions ('@{{ angularQuestion[0].type }}')"	
-												ng-if="angularQuestion[0].type == 'radio'"
-											>
-											</select>
 										
+											<p ng-if="angularQuestion[0].type == 'checkbox'">
+												<select class="correct-answer"
+														name="correct_answers[@{{angularQuestion[0].id}}][]"
+														ng-model="$parent.angularCorrectAnswersArray[angularQuestion[0].id]"
+														ng-options="angularOption.title for angularOption in angularOptionsArray[angularQuestion[0].id] track by angularOption.id"
+														ng-show="showOptions ('@{{ angularQuestion[0].type }}')"
+														multiple		
+												></select>
+											</p>
+											
+											<p ng-if="angularQuestion[0].type == 'radio'">													
+												<select class="correct-answer"
+														name="correct_answers[@{{angularQuestion[0].id}}]"
+														ng-model="$parent.angularCorrectAnswersArray[angularQuestion[0].id]" 
+														ng-options="angularOption.title for angularOption in angularOptionsArray[angularQuestion[0].id] track by angularOption.id"
+														ng-show="showOptions ('@{{ angularQuestion[0].type }}')"	
+												>
+												</select>
+											</p>
+											
 										</td>
 										<td class="table-text col-sm-1">	
 											<button ng-click="removeQuestion($event, angularQuestion[0].id)" class="btn btn-danger">X</button> 
@@ -178,7 +178,6 @@
 									
 								</tbody>
 							</table>
-
 							<input type="hidden" name="options_to_delete[]" value="@{{ angularOptionsToDelete }}">
 							<input type="hidden" name="questions_to_delete[]" value="@{{ angularQuestionsToDelete }}">
 													

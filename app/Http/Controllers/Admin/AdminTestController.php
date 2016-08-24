@@ -66,7 +66,7 @@ class AdminTestController extends Controller
 	{
 		return view('admin.tests.edit', [
 			'test' => $test,		
-			'test_questions' => $this->test_questions->forTest($test),/*
+			'test_questions' => $this->test_questions->forTest($test)->keyBy('id')->all(),/*
 			'question_options' => $this->question_options->forTest($test),*/
 			'navbar_style' => 'navbar-inverse'
 		]);
@@ -93,7 +93,7 @@ class AdminTestController extends Controller
 		
 		return view('admin.tests.edit', [
 			'test' => $test,
-			'test_questions' => $this->test_questions->forTest($test),/*		
+			'test_questions' => $this->test_questions->forTest($test)->keyBy('id')->all(),/*		
 			'question_options' => $this->question_options->forTest($test),*/
 			'navbar_style' => 'navbar-inverse'
 		]);

@@ -4,7 +4,7 @@ var app = angular.module('angularjs-starter', [])
 app.controller('MainController', function($scope, $http, API_URL ) { 
  
 	/* Error Message show/hide */	
-	$scope.apiMessage = true;
+	$scope.apiMessage = true;	
 
 	// function to evaluate if a number is even
 	$scope.showOptions = function($questionType) {
@@ -28,14 +28,34 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 				console.log(response.data.options);*/
 			
 				/* Responded with an array of Options object */
+				
 				if (response.data) {		 
 
 					$scope.angularQuestionsArray = response.data.questions;	
 					$scope.angularOptionsArray = response.data.options;	
 
-					$lastOptionId = response.data.lastOptionId;//$scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]]; 
-					/*$scope.angularOptionsArray[Object.keys($scope.angularOptionsArray)[Object.keys($scope.angularOptionsArray).length - 1]];
-					delete $scope.angularOptionsArray.lastId;*/	
+					$lastOptionId = response.data.lastOptionId;				
+					
+					/* Retrieving the correct answers for questions and assigning the selected attributes on the Edit test page to the answers ids */
+					
+					$scope.angularCorrectAnswersArray = [];
+					
+					for (var i in $scope.angularQuestionsArray){
+						
+						if ('' !== $scope.angularQuestionsArray[i][0].correct_answers)
+						{							
+							answers = JSON.parse($scope.angularQuestionsArray[i][0].correct_answers);
+								
+							if (typeof answers == 'object') {	 							
+								$scope.angularCorrectAnswersArray[i] = [];
+								answers.forEach(function(answer, k, answers) {						
+									$scope.angularCorrectAnswersArray[i].push({'id':answer});
+								});
+							} else {
+								$scope.angularCorrectAnswersArray[i] = {'id':answers};
+							}
+						}
+					}	 
 					
 				} else {
 					var $lastOptionId = 0;
@@ -47,7 +67,16 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 				
 				/////////////////////////////////////////////////////////////
 				///////////////////QUESTIONS/////////////////////////////////
-				/////////////////////////////////////////////////////////////
+				/////////////////////////////////////////////////////////////				
+				
+				/* Remove particular Question */
+				$scope.removeQuestion = function($event, $questionId) {
+					$event.preventDefault(); 
+				
+					$scope.angularQuestionsToDelete.push($questionId);
+					
+					delete $scope.angularQuestionsArray[$questionId];
+				};	
 				
 				/////////////////////////////////////////////////////////////
 				///////////////////OPTIONS///////////////////////////////////
@@ -89,17 +118,7 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 							break;
 						}
 					} 
-				};	 
-
-				
-				/* Remove particular Question */
-				$scope.removeQuestion = function($event, $questionId) {
-					$event.preventDefault(); 
-				
-					$scope.angularQuestionsToDelete.push($questionId);
-					
-					delete $scope.angularQuestionsArray[$questionId];
-				};	 				
+				};	  				
 
 			}, function errorCallback(response) {
 				console.log (response, 'Error occurred!!!');				

@@ -26,7 +26,7 @@
 					{{--*/ $correct_answers = json_decode($correct_answers_array[$question_id]->correct_answers) /*--}}
 					 
 					@if (is_array($correct_answers))
-						@if (empty (array_diff( $correct_answers , $test_answers)) && !empty($correct_answers))
+						@if (empty (array_diff( $correct_answers , $test_answers)) && empty (array_diff( $test_answers , $correct_answers)) && !empty($correct_answers))
 							<div class="panel panel-success">
 						@else 
 							<div class="panel panel-danger">
