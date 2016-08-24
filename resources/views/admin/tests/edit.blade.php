@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('navbar')
-	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">ADMIN PANEL</strong></li>
-	<li><a href="{{ url('/admin/') }}">TESTS (edit)</a></li>
-	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">MENU 2</strong></li>
-	<li><strong class="text-muted" style="padding: 15px 15px; float: left; text-transform:uppercase; color:white;">MENU 3</strong></li>
+	<!--<li style="border-right: 1px solid gray;"><strong class="text-primary" style="padding: 15px 15px; float: left; text-transform:uppercase;">CLIENT SIDE </strong></li>-->
+	<li style="text-transform:uppercase;  border-right: 1px solid white;"> <a href="{{ url('/admin') }}">Edit Tests</a> </li>
+	<li style="border-right: 1px solid white;"><span class="text-muted" style="padding: 15px 15px; float: left; color:white;">Menu2</span></li>
+	<li style="border-right: 1px solid white;"><span class="text-muted" style="padding: 15px 15px; float: left; color:white;">Menu3</span></li>
+	
 	<li><a href="{{ url('/') }}">Go to Client Side</a></li>
 @endsection
 
@@ -150,7 +151,8 @@
 										</td>	
 										<td class="table-text col-sm-1">
 										
-											<p ng-if="angularQuestion[0].type == 'checkbox'">
+											
+											<p ng-if="angularQuestion[0].type == 'checkbox' && angularOptionsArray[angularQuestion[0].id].length">
 												<select class="correct-answer"
 														name="correct_answers[@{{angularQuestion[0].id}}][]"
 														ng-model="$parent.angularCorrectAnswersArray[angularQuestion[0].id]"
@@ -160,7 +162,7 @@
 												></select>
 											</p>
 											
-											<p ng-if="angularQuestion[0].type == 'radio'">													
+											<p ng-if="angularQuestion[0].type == 'radio' && angularOptionsArray[angularQuestion[0].id].length">											
 												<select class="correct-answer"
 														name="correct_answers[@{{angularQuestion[0].id}}]"
 														ng-model="$parent.angularCorrectAnswersArray[angularQuestion[0].id]" 

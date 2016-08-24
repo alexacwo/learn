@@ -32,7 +32,7 @@ class AdminMainController extends Controller
     {
         $this->middleware('auth');
 		
-        $this->tests = $tests;
+        $this->tests = $tests;		
     }
 	
 	/**

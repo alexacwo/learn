@@ -1,0 +1,259 @@
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+body {
+  background: #fff;
+}
+a,
+a:hover,
+a:focus,
+a:active {
+	text-decoration:none;
+}
+.card {
+	background: #fafff8;
+	border-radius: 2px;
+	display: inline-block;
+	height: 120px;
+	margin: 5px;
+	position: relative;
+	width: 300px;
+}
+
+.card-1 {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.card-1:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+span.title {
+  margin: 0 auto;
+  color: #BBB;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  text-align: center;
+  display: block;
+}
+.basicBox, .swiggleBox, .checkBox {
+  width: 220px;
+  height: 65px;
+  margin: 15px auto;
+  color: #4274D3;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 65px;
+  text-transform: uppercase;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+}
+
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+svg rect, svg path, svg polyline {
+  fill: none;
+  stroke: #4274D3;
+  stroke-width: 1;
+}
+
+.basicBox:hover svg rect, .swiggleBox:hover svg path, .checkBox:hover svg polyline {
+  stroke: #4274D3;
+}
+
+/* Basic Box */
+svg rect {
+  stroke-dasharray: 400, 0;
+  -webkit-transition: all 0.8s ease-in-out;
+  -moz-transition: all 0.8s ease-in-out;
+  -ms-transition: all 0.8s ease-in-out;
+  -o-transition: all 0.8s ease-in-out;
+}
+.basicBox:hover svg rect {
+  stroke-width: 3;
+  stroke-dasharray: 35, 245;
+  stroke-dashoffset: 38;
+  -webkit-transition: all 0.8s ease-in-out;
+  -moz-transition: all 0.8s ease-in-out;
+  -ms-transition: all 0.8s ease-in-out;
+  -o-transition: all 0.8s ease-in-out;
+}
+
+
+
+
+
+.task-box.task-box-programmers {
+    background-image: linear-gradient(#fff, #f4f8fe);
+    box-shadow: none;
+    border: 1px solid #d9e5ec;
+}
+.task-box {
+    position: relative;
+    margin: 10px 0;
+    line-height: 1.2;
+    background: white;
+    border: 1px solid #cdcdcd;
+    border-radius: 5px;
+    box-shadow: #cdcdcd 0 2px 3px;
+    min-height: 90px;
+}
+.task-box.task-box-programmers.diff-1 .difficulty {
+    background-color: #7FC1E3;
+}
+.task-box.diff-1 .difficulty {
+    background: #1da619;
+}
+.task-box .difficulty {
+    border-radius: 4px 0 0 4px;
+}
+.task-box .difficulty {
+    position: absolute;
+    width: 21px;
+    height: 100%;
+}
+.task-box .difficulty>span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+.task-box.task-box-programmers .difficulty>span>span {
+    font-family: "Open Sans",Verdana,sans-serif;
+}
+.task-box .difficulty>span>span {
+    position: relative;
+    left: -50%;
+    top: -.6em;
+    font: 500 12px "Roboto";
+    display: inline-block;
+    color: white;
+    text-transform: uppercase;
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+.task-box.task-box-programmers .main-column {
+    margin-right: 7px;
+    margin-top: 7px;
+}
+
+.task-box .main-column {
+    font-size: 12px;
+}
+.task-box .main-column {
+    margin-left: 31px;
+    margin-right: 60px;
+    margin-bottom: 5px;
+}
+.layout-floated {
+    text-align: center;
+    position: relative;
+}
+
+.clearfix, .layout-floated, .modal-box-clean, .outer-modal-box-clean, .code-editor .actionbar, .training-lesson .header-cont, .voting-box-new.prog-form, .getaward-section .start-part {
+}
+.clearfix:after, .layout-floated:after, .modal-box-clean:after, .outer-modal-box-clean:after, .code-editor .actionbar:after, .training-lesson .header-cont:after, .voting-box-new.prog-form:after, .getaward-section .start-part:after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+.layout-floated>.left {
+    float: left;
+    position: absolute;
+    left: 0;
+}
+.lessons_view .current_lesson .title {
+    color: #046ba2;
+}
+.task-box.task-box-programmers .title {
+    font-family: "Open Sans",Verdana,sans-serif;
+}
+.task-box .title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.task-box .title, .own-task-box .title {
+    font: 500 19px "Roboto";
+    margin: 4px 0;
+}
+h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child, p:last-child {
+    margin-bottom: 0;
+}
+h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, p:first-child {
+    margin-top: 0;
+}
+h4, h5 {
+    font-weight: 400;
+}
+h4 {
+    font-size: 1.42857143rem;
+}
+h1, h2, h3, h4, h5 {
+    font-family: Roboto;
+    line-height: 1.2857em;
+    margin: calc(2rem - .14285em) 0 1rem;
+    font-weight: 300;
+    padding: 0;
+    color: rgba(0,0,0,.8);
+}
+a {
+    color: #046ba2;
+    text-decoration: none;
+}
+
+a {
+    background: 0 0;
+    color: #4183C4;
+    text-decoration: none;
+}
+.layout-floated>.right {
+    float: right;
+}
+.prog-button.blue {
+    color: #ffffff;
+    background-image: linear-gradient(#0090da, #0076b2);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0090da', endColorstr='#0076b2');
+    border: 1px solid;
+    border-color: #00547f;
+}
+.prog-button {
+    box-sizing: border-box;
+    display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 8px 1em;
+    box-shadow: none;
+    text-shadow: none;
+    text-align: center;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: "Open Sans",Verdana,sans-serif;
+    background-image: none;
+}
+a {
+    color: #046ba2;
+    text-decoration: none;
+}
+a {
+    background: 0 0;
+    color: #4183C4;
+    text-decoration: none;
+}
+.task-box.task-box-programmers .synopsis {
+    font-style: normal;
+}
+.task-box .synopsis {
+    margin: 5px 0;
+    font-style: italic;
+}

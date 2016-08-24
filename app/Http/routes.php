@@ -11,7 +11,7 @@
 |
 */
 
-use App\Task;
+use App\Test;
 use Illuminate\Http\Request;
 
 
@@ -46,7 +46,13 @@ Route::post('/admin/test_create', 'Admin\AdminTestController@test_create');
 Route::post('/admin/edit/{test}', 'Admin\AdminTestController@add_question');
 Route::post('/admin/edit_questions/{test}', 'Admin\AdminTestController@edit_questions');
 
-/* JSON information of available options for a given test for AngularJS */
+Route::delete('/delete_test/{test}', function (Test $test) {
+    $test->delete();
+
+    return redirect('/admin');
+});
+
+/* JSON information of available questions and options for a given test for AngularJS front-end */
 
 Route::get('/admin/test_crud_json/{test}', 'Admin\AdminTestController@test_crud_json');
 

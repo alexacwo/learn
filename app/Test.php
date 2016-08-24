@@ -12,8 +12,26 @@ class Test extends Model
      *
      * @var array
      */
-    protected $fillable = ['title'];
-		
+    protected $fillable = [
+		'title',
+		'date',
+		'intro'
+	];
+	
+	/**
+	* The attributes that should be mutated to dates.
+	*
+	* @var array
+	*/
+    protected $dates = ['date'];
+
+	/**
+	* The storage format of the model's date columns.
+	*
+	* @var string
+	*/
+    protected $dateFormat = 'd.m.Y';
+	
     /**
      * Get the user that owns the test.
      */

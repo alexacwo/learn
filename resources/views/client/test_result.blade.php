@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('navbar')
-	<li><strong class="text-primary" style="padding: 15px 15px; float: left; text-transform:uppercase;">CLIENT SIDE</strong></li>
-	<li><a href="{{ url('/') }}">Tests</a></li>
-	<li><a href="{{ url('/') }}">Reading</a></li>
-	<li><a href="{{ url('/') }}">Audio files</a></li>
+	<!--<li style="border-right: 1px solid gray;"><strong class="text-primary" style="padding: 15px 15px; float: left; text-transform:uppercase;">CLIENT SIDE </strong></li>-->
+	<li style="text-transform:uppercase;  border-right: 1px solid white;"> <a href="{{ url('/') }}">Tests</a> </li>
+	<li style="border-right: 1px solid white;"><span class="text-muted" style="padding: 15px 15px; float: left; color:black;">Menu2</span></li>
+	<li style="border-right: 1px solid gray;"><span class="text-muted" style="padding: 15px 15px; float: left; color:black;">Menu3</span></li>
+	
 	@if (Auth::user()->role == 'admin')
 		<li><a href="{{ url('/admin') }}">ADMIN DASHBOARD</a></li>
 	@endif

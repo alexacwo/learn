@@ -15,7 +15,7 @@ class TestRepository
     public function forUser(User $user)
     {
         return $user->tests()
-                    ->orderBy('created_at', 'asc')
+                    ->orderBy('date', 'asc')
                     ->get();
     }
 }

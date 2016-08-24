@@ -32,8 +32,9 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 				if (response.data) {		 
 
 					$scope.angularQuestionsArray = response.data.questions;	
-					$scope.angularOptionsArray = response.data.options;	
-
+					
+					$scope.angularOptionsArray = response.data.options;
+					
 					$lastOptionId = response.data.lastOptionId;				
 					
 					/* Retrieving the correct answers for questions and assigning the selected attributes on the Edit test page to the answers ids */
@@ -42,7 +43,7 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 					
 					for (var i in $scope.angularQuestionsArray){
 						
-						if ('' !== $scope.angularQuestionsArray[i][0].correct_answers)
+						if (null != $scope.angularQuestionsArray[i][0].correct_answers && '' !== $scope.angularQuestionsArray[i][0].correct_answers)
 						{							
 							answers = JSON.parse($scope.angularQuestionsArray[i][0].correct_answers);
 								
@@ -55,7 +56,7 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 								$scope.angularCorrectAnswersArray[i] = {'id':answers};
 							}
 						}
-					}	 
+					}
 					
 				} else {
 					var $lastOptionId = 0;
@@ -131,7 +132,7 @@ app.controller('MainController', function($scope, $http, API_URL ) {
 		});  */
 	};
 }); 
-
+/*
 app.filter('range', function() {
   return function(input, min, max) {
     min = parseInt(min); //Make string input int
@@ -140,4 +141,4 @@ app.filter('range', function() {
       input.push(i);
     return input;
   };
-});
+});*/

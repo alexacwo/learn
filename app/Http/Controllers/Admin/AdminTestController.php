@@ -49,6 +49,8 @@ class AdminTestController extends Controller
 	{
 		$request->user()->tests()->create([
 			'title' => $request->title,	
+			'date' => $request->date,	
+			'intro' => $request->intro,
 		]);
 
 		return redirect('/admin');
